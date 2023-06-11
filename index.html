@@ -1,0 +1,877 @@
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fallen_Cat's Lose Weight Story</title>
+    <style>
+*{
+    text-align: center;
+    transition-duration: 0.5s;
+    font-family: 'Bahnschrift';
+  color: #FFFFFF;
+}
+.smolOuterBar {
+	height: 20px;
+	min-width: 200px;
+	width: 80%;
+	background-color: #fafafa;
+	border-radius: 5px;
+}
+
+.smolInnerBar {
+	height: 20px;
+	background-color: #ff0000;
+    transition-duration: 0.1s;
+	border-radius: 5px;
+}
+.upgCol:has(div .vers) {
+    width: 90%;
+    background: var(--changelogBackground);
+    border-radius: 8px;
+    margin-bottom: 50px;
+}
+
+.upgCol:has(div .vers)>div:has(span>div) {
+    padding: 10px 10px 0 10px;
+}
+
+.upgCol:has(div .vers)>div>span>div {
+    background: var(--changelogColor);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.upgCol:has(div .vers)>div>span>div:has(h2) {
+    background: var(--changelogColor);
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.versions {
+    margin: 10px;
+}
+
+.vers {
+    margin-bottom: 10px;
+}
+
+.vers:only-of-type {
+    margin-bottom: 0;
+}
+
+.vers>div {
+    background: var(--changelogColor);
+    border-radius: 8px 8px 0 0;
+    padding: 10px;
+}
+
+details {
+    margin: 0;
+    background-color: rgb(251, 181, 255);
+    border-radius: 0 0 8px 8px;
+    width: 1000px;   
+    color: black;
+    border: 5px solid rgb(255, 123, 176); 
+}
+
+details:not([open]):last-of-type>summary {
+    border-radius: 0 0 8px 8px;
+}
+
+details>summary {
+    cursor: pointer;
+    padding: 10px;
+    text-align: left;
+    background: var(--changelogLight);
+}
+
+ul {
+    padding: 5px 5px 5px 15px;
+    background-color: rgb(254,173,205);
+    list-style: inside;
+}
+
+ul:first-of-type {
+    margin-bottom: 0;
+    padding-bottom: 2px;
+}
+
+ul:last-of-type {
+    margin-top: 0;
+    padding-top: 2px;
+}
+
+ul:only-of-type {
+    padding: 5px 5px 5px 15px;
+}
+
+*:last-of-type>ul:last-of-type {
+    border-radius: 0 0 8px 8px;
+}
+
+ul>li {
+    margin: 8px 0;
+    right: 0px;
+    list-style-position: inside;
+    text-align: left;
+}
+
+ul>li::before {
+    padding: 6px 8px;
+    margin-right: 8px;
+}
+
+ul>li:first-of-type {
+    margin: 8px 0 6px 0;
+}
+
+ul>li:first-of-type::before {
+    border-radius: 4px 4px 0 0;
+    padding: 2px 8px 6px 8px;
+}
+
+ul>li:last-of-type {
+    margin: 6px 0 8px 0;
+}
+
+ul>li:last-of-type::before {
+    border-radius: 0 0 4px 4px;
+    padding: 6px 8px 2px 8px;
+}
+
+
+ul>li:only-of-type {
+    margin: 8px 0;
+}
+
+ul>li:only-of-type::before {
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+
+li>a:hover {
+    text-shadow: 0 0 5px white;
+}
+
+li.Endgame::before {
+    content: "Endgame";
+    background: #fffc61;
+    color: #171717;
+}
+
+li.Added::before {
+    content: "Added";
+    background: #7eed5c;
+    color: #171717;
+}
+
+li.Changed::before {
+    content: "Changed";
+    background: #f7922d;
+    color: #171717;
+}
+
+li.Removed::before {
+    content: "Removed";
+    background: #f7634f;
+    color: #171717;
+}
+
+li.Fixed::before {
+    content: "Fixed";
+    background: #31eb63;
+    color: #171717;
+}
+html, body, #app {
+	min-height: 100%;
+	height: 100%;
+	margin: 0;
+}
+table, tr, .table {
+    display: flex;
+    justify-content: center;
+}
+
+body
+{
+  background-color: rgb(17, 0, 29);
+}
+.tabbtn {
+    height: 40px;
+    width: 100px;
+    font-size: 1.1em;
+    border: 2px solid white;
+    font-weight: bold;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+.subtabbtn {
+    height: 25px;
+    width: 70px;
+    font-size: 0.6em;
+    border: 1px solid white;
+    font-weight: bold;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+}
+.thoughtfont {
+  color: #31aeb0;
+    text-shadow: 0.166667em 0.166667em 0.3333333em rgb(47, 115, 171), 0.3333333em 0.3333333em 0.66666667em rgb(62, 5, 85);
+    font-size: 1.6em;
+}
+.desc {
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+    text-shadow: 3px 3px 28px rgb(133, 133, 133), 3px 3px 28px rgb(255, 255, 255);
+}
+.selected {
+  border-bottom: 4px solid #FFFFFF;
+}
+.current{
+    transform: scale(110%);
+}
+.optionSelection {
+    color: rgb(255, 255, 255);
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    width: 75px;
+    height: 75px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 5px;
+    cursor: pointer;
+}
+.optionSelection:hover {
+    color: rgb(255, 255, 255);
+    background-color: #454545;
+    filter: brightness(120%);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.optionSelection:active {
+    color: rgb(255, 255, 255);
+    background-color: #656565;
+    filter: brightness(150%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.nothing.unlocked {
+    color: white;
+    background-color: black;
+    border: 3px solid #222222;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.tier0.unlocked {
+    color: white;
+    background-color: #000000;
+    border: 3px solid #ff0000;
+    box-shadow: inset 0px 0px 5px 5px red;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.tier1.unlocked {
+    color: white;
+    background-color: #494949;
+    border: 3px solid #818181;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.tier2.unlocked {
+    color: white;
+    background-color: #a15c2f;
+    border: 3px solid #714121;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.tier3.unlocked {
+    color: white;
+    background-color: #a8a8a8;
+    border: 3px solid #7a7a7a;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #797979;
+    cursor: pointer;
+}
+.tier4.unlocked {
+    color: white;
+    background-color: #E5C100;
+    border: 3px solid #ccad00;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #ccad00;
+    box-shadow: 0px 1px #ccad00;
+    cursor: pointer;
+}
+.tier5.unlocked {
+    color: white;
+    background: linear-gradient(135deg,#79b9c7,#69d2ea);
+    border: 3px solid #6aa1ad;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #6aa1ad;
+    box-shadow: 0px 2px #6aa1ad;
+    cursor: pointer;
+}
+.tier6.unlocked {
+    color: white;
+    background: linear-gradient(135deg,#5effb4,#34d88b,#49d393);
+    border: 3px solid #2ec27e;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #34d88b;
+    box-shadow: 0px 3px #34d88b;
+    cursor: pointer;
+}
+.tier7.unlocked {
+    color: white;
+    background: radial-gradient(#6666ff,#5252d1,#3636e0);
+    border: 3px solid #5151ff;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #5151ff;
+    box-shadow: 0px 3px #5151ff;
+    cursor: pointer;
+}
+.tier8.unlocked {
+    color: white;
+    background: repeating-linear-gradient(#ed333b, #ff343e 20px, #ed333b 20px, #ff343e 25px);
+    border: 3px solid #cf2c35;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 0px 3px #cf2c35;
+    box-shadow: 3px 3px 3px #cf2c35;
+    cursor: pointer;
+}
+.tier9.unlocked {
+    color: black;
+    background: repeating-conic-gradient(  white 0%,  #dedede 15%,  white 33%);
+    border: 3px solid #eeeeee;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px green,-1px -1px red;
+    box-shadow: 3px 3px 3px #eeeeee;
+    cursor: pointer;
+}
+.tier10.unlocked {
+    color: black;
+    background: linear-gradient(45deg, #e9ba0f 25%, #ffc800 0, #ffc800 50%, #e9ba0f 0, #e9ba0f 75%, #ffc800 0);
+    border: 3px solid #deb10f;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 2px 2px #deb10f;
+    cursor: pointer;
+}
+.tier11.unlocked {
+    color: black;
+    background-image: repeating-conic-gradient(#cd72ff 0 25%, #c862ff 0 50%);
+  	background-size: 32px 32px;
+    border: 3px solid #a94ddb;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 3px 3px #a94ddb;
+    cursor: pointer;
+}
+.tier12.unlocked {
+    color: black;
+    background: linear-gradient(45deg, #27b897 50%, #2cd1aa 0);
+    background-size: 14px 14px;
+    border: 3px solid #229e81;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 4px 4px #229e81;
+    cursor: pointer;
+    animation: 3s alternate glowingtext infinite;
+}
+.tier13.unlocked {
+    color: black;
+    background: #ff0083;
+    background-image:repeating-linear-gradient(45deg,
+      hsla(0,0%,100%,.2),
+      hsla(0,0%,100%,.2) 10px,
+      transparent 0,
+      transparent 30px),
+      repeating-linear-gradient(-45deg,
+      hsla(0,0%,100%,.2),
+      hsla(0,0%,100%,.2) 10px,
+      transparent 0,
+      transparent 30px);
+    border: 3px solid #e60077;
+    background-position: 0% 0%;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 5px 5px #e60077;
+    cursor: pointer;
+    animation: 2s alternate glowingtext infinite ;
+}
+.tier14.unlocked {
+    color: black;
+    background: #ffffcc;
+      background-image:
+         linear-gradient(white 50%, transparent 0),
+         linear-gradient(90deg,white 50%, transparent 0);
+      background-size: 15px 15px;
+      background-position:0 0 ,0 0;
+    border: 3px solid #f7f7c5;
+    background-position: 0% 0%;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 6px 6px #f7f7c5;
+    cursor: pointer;
+    animation: 1s alternate glowingtext infinite ;
+}
+.tier15.unlocked {
+    color: black;
+    background: #00ff00;
+    background-image:
+         radial-gradient(white 30%, transparent 0),
+         radial-gradient(white 30%, transparent 0);
+      background-size: 10px 10px;
+      background-position:0 0 ,0 0;
+    border: 3px solid #00e700;
+    background-position: 0% 0%;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 7px 7px #00e700;
+    cursor: pointer;
+    animation: 2s alternate glowingtext infinite, 3s alternate shadow infinite ;
+}
+.tier16.unlocked {
+    color: black;
+    background: #4ea6d3;
+    background-image:
+      linear-gradient(335deg, #5ebdec 23px, transparent 0),
+      linear-gradient(155deg, #66ccff 23px, transparent 0),
+      linear-gradient(335deg, #5ebdec 23px, transparent 0),
+      linear-gradient(155deg, #66ccff 23px, transparent 0);
+    background-position: 0px 0px, 4px 33px, 30px 29px, 34px 4px;
+    background-size: 58px 58px;
+    border: 3px solid #5bb7e6;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 8px 8px #5bb7e6;
+    cursor: pointer;
+    animation: 1s alternate glowingtext infinite, 2s alternate shadow infinite ;
+}
+.tier17.unlocked {
+    color: black;
+    background-image:
+    linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),            linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),            linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+    border: 3px solid #5bb7e6;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    border-radius: 4%;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    text-shadow: 1px 1px blue,-1px -1px red;
+    box-shadow: 0px 0px 9px 9px #5bb7e6;
+    cursor: pointer;
+    animation: 1s alternate glowingtext infinite, 2s alternate shadow infinite ;
+}
+@keyframes glowingtext{
+    from { color: black } to { color: darkblue } 
+}
+
+@keyframes climbing{
+    0% {
+		background-position: 0% 0%;
+	}
+	50% {
+		background-position: 0% 100%;
+	}
+	100% {
+		background-position: 0% 200%;
+	}
+}
+
+@keyframes shadow{
+    0% {
+		text-shadow: 1px 1px blue,-1px -1px red;
+	}
+	50% {
+		text-shadow: 1px -1px blue,-1px 1px red;
+	}
+	100% {
+		text-shadow: -1px -1px blue,1px 1px red;
+	}
+}
+.menu.unlocked:hover{
+    color: black;
+    background: rgb(0, 218, 218);
+}
+.menu.unlocked {
+    color: white;
+    background: #000000;
+    border: 3px solid rgb(0, 218, 218);
+    width: 350px;
+    height: 70px;
+    margin-left: 5px;
+    border-radius: 5px;
+    text-shadow: 0px 4px 4px #ffffff;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.menu.locked {
+    color: grey;
+    background: #000000;
+    border: 3px solid rgb(54, 23, 23);
+    width: 350px;
+    height: 70px;
+    margin-left: 5px;
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.medal.wood {
+    color: white;
+    background: #000000;
+    border: 2px solid white;
+    width: 260px;
+    height: 200px;
+    margin-left: 5px;
+    border-radius: 4%;
+    text-shadow: 0px 4px 20px #ffffff;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.book.tier1 {
+    color: white;
+    background-color: black;
+    border: 2px solid white;
+    width: 260px;
+    height: 200px;
+    margin-left: 5px;
+    border-radius: 4%;
+    text-shadow: 0px 4px 20px #ffffff;
+    font-size: 20px;
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.options {
+    color: white;
+    background-color: black;
+    border: 2px solid #ffffff;
+    padding: 5px 5px 5px 5px;
+    cursor: pointer;
+}
+.options:hover {
+    background-color: #acacac;
+    filter: brightness(120%);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.options:active {
+    background-color: #717171;
+    transition-duration: 0.25s;
+    filter: brightness(150%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.changelog {
+    color: white;
+    background-color: black;
+    border: 2px solid #ffffff;
+    padding: 5px 5px 5px 5px;
+    cursor: pointer;
+}
+.changelog:hover {
+    background-color: #acacac;
+    filter: brightness(120%);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.changelog:active {
+    background-color: #717171;
+    transition-duration: 0.25s;
+    filter: brightness(150%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.setting {
+    color: white;
+    background-color: black;
+    border: 2px solid #ffffff;
+    padding: 5px 5px 5px 5px;
+    cursor: pointer;
+}
+.setting:hover {
+    background-color: #acacac;
+    filter: brightness(120%);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.setting:active {
+    background-color: #717171;
+    transition-duration: 0.25s;
+    filter: brightness(150%);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url(https://fonts.gstatic.com/s/inconsolata/v31/QldgNThLqRwH-OJ1UHjlKENVzkWGVkL3GZQmAwLYxYWI2qfdm7Lpp4U8WRL2l2eY.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url(https://fonts.gstatic.com/s/inconsolata/v31/QldgNThLqRwH-OJ1UHjlKENVzkWGVkL3GZQmAwLYxYWI2qfdm7Lpp4U8WRP2l2eY.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url(https://fonts.gstatic.com/s/inconsolata/v31/QldgNThLqRwH-OJ1UHjlKENVzkWGVkL3GZQmAwLYxYWI2qfdm7Lpp4U8WR32lw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.floatingText {
+    position: absolute;
+    bottom: 20px;
+    left: 150px;
+    animation: float 1s 1;
+    color: skyblue;
+    font-size: 1.2em;
+    opacity: 0;
+}
+
+@keyframes float {
+    0% { bottom: 0px; opacity: 0;}
+    50% {opacity: 1; }
+    100% { bottom: 50px; opacity: 0;}
+}
+    </style>
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.12/vue.min.js"></script>
+    <script src="break_eternity.js"></script>
+    <script src="maingame.js"></script>
+    <script src="player.js"></script>
+    <script src="gameloop.js"></script>
+    <script src="thought.js"></script>
+    <script src="v.js"></script>
+    <script src="temp.js"></script>
+    <script src="jQquery.js"></script>
+</head>
+<body onload="loadGame()">
+    <div id="app">
+        
+      <div v-if="tab.normal!='Main'&&tab.normal!='Game'&&tab.normal!='Result'"><table>
+        <tr>
+            <td v-for="(tab, name) in tabs.normal"><button v-if="tabs.normal[name]()&&name!='Main'&&name!='Game'&&name!='Result'" v-on:click="showTab(name,'normal')" v-bind:class="{[name.toLowerCase()]: true, tabbtn: true, selected: tab.normal==this.name}">{{name}}</button></td>
+        </tr>
+    </table></div><br>
+    <div v-if="tab.normal=='Options'">
+        <div v-if="tab.options=='Setting'"><br>
+      <button v-bind:class="{optionSelection:true}" onclick="importSave()">Import</button>
+      <button v-bind:class="{optionSelection:true}" onclick="exportSave()">Export</button>
+      <button v-bind:class="{optionSelection:true}" onclick="hardReset()" style="background-color: #FF0000;">Reset</button><br><br>
+    </div>
+    </div>
+        <div v-if="tab.normal=='Main'">
+            <span class="desc" style="color: #000000;font-size: 50px ;background-color: #dd3333 ;padding:5px ; text-shadow: none;">Hebei</span><span class="desc" style="color: rgb(255, 95, 159);font-size: 50px;"> Zhongkao Tree</span><span class="desc" style="color: white;font-size: 50px;"> [Alpha Version]<sub> ver.Alpha 0</sub></span><br>
+            <table style="position: relative;">
+                <tr>
+                    <td>
+                     <div style="height:600px; width: 400px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
+                        <br>
+                        Main Menu
+                        <br>
+                        <button v-bind:class={unlocked:true,menu:true} onclick="alert('Coming Soon!')"> Tutorial </button><br>
+                        <button v-bind:class={unlocked:true,menu:true} onclick="alert('Coming Soon!')"> Skill Setting </button><br>
+                        <button v-bind:class={unlocked:true,menu:true} onclick="alert('Coming Soon!')"> Tech Tree </button><br><br>
+                        <br>
+                        <button v-bind:class={unlocked:true,menu:true} onclick="startGame()"> Causal Mode </button><br>
+                        <button v-bind:class={locked:true,menu:true}> Reach Rank-500 in Casual<br> Mode to unlock. </button><br>
+                        <button v-bind:class={locked:true,menu:true}> Reach Rank-100 in Casual<br> Mode to unlock. </button><br>
+                    </div>
+                    </td>
+                    <td>
+                        <div style="height:600px; width: 400px; background-color:#000000 ;border: 3px solid #ff8c27;border-radius: 10px;font-size: 20px" class = 'desc'>
+                           <br>
+                           == Statistics ==<br><br>
+                           Best Score:<br>
+                           <button v-bind:class={medal:true,wood:true}>1st Term<br><br><span style="font-size: 50px;">{{formatWhole(player.bestRank)}}<sub>th</sub></span><br>Raw Score: 0</button><br><br>
+                           Best Textbook:<br>
+                       </div>
+                    </td>
+                    <td>
+                        <div style="height:600px; width: 400px; background-color:#000000 ;border: 3px solid #2cd1aa;border-radius: 10px;font-size: 20px;" class = 'desc'>
+                           <br>
+                           == Tech Slots ==<br><br>
+                           <button v-bind:class={nothing:true,unlocked:true} style="font-size: 30px;width: 200px;">None</button><br>
+                           <button v-bind:class={nothing:true,unlocked:true} style="font-size: 30px;width: 200px;">None</button><br>
+                           <button v-bind:class={nothing:true,unlocked:true} style="font-size: 30px;width: 200px;">None</button><br>
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+        <div v-if="tab.normal=='Result'">
+            <table><tr><td>
+            <div style="height:600px; width: 500px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
+            
+                <button v-bind:class={medal:true,wood:true}>Final Score<br><br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>th</sub></span></button><br>
+                Fallen_Cat exhausted all her stemina and Got a rank of {{formatWhole(calcRank())}} / 1123 in her Final Exam!<br><br>
+                This is the entire content of the current Alpha version, please look forward to the next update!<br>
+                <button v-bind:class={unlocked:true,menu:true} onclick="endGame()"> Back </button>
+                
+            
+            </td></tr></table>
+        </div>
+        <div v-if="tab.normal=='Game'">
+            <table>
+                <tr>
+                    <td>
+            <div style="height:643px; width: 700px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
+                <table><tr><td>
+            <table>
+                <tr v-for="(v,index) in LEVEL_DATA[0].map">
+                    <td v-for="(v2,index2) in LEVEL_DATA[0].map[index]"><button v-bind:class="{tier0:NaNCheck(player.grid[index*10+index2+1])<0,tier1:NaNCheck(player.grid[index*10+index2+1])==2,tier2:NaNCheck(player.grid[index*10+index2+1])==4,tier3:NaNCheck(player.grid[index*10+index2+1])==8,tier4:NaNCheck(player.grid[index*10+index2+1])==16,tier5:NaNCheck(player.grid[index*10+index2+1])==32,tier6:NaNCheck(player.grid[index*10+index2+1])==64,tier7:NaNCheck(player.grid[index*10+index2+1])==128,tier8:NaNCheck(player.grid[index*10+index2+1])==256,tier9:NaNCheck(player.grid[index*10+index2+1])==512,tier10:NaNCheck(player.grid[index*10+index2+1])==1024,tier11:NaNCheck(player.grid[index*10+index2+1])==2048,nothing:player.grid[index*10+index2+1] == 'nothing',unlocked:true,current:player.current%10==index2+1&&Math.floor(player.current/10)==index}" v-on:click="onClick(index*10+index2+1)">{{player.grid[index*10+index2+1]!='nothing'?player.grid[index*10+index2+1]:''}}</button></td></table><br>
+                </tr>
+            </table>
+            </td>
+        <td>
+            <div style="height:210px; width: 300px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
+            
+                <button v-bind:class={medal:true,wood:true} id = 'score'>{{player.try}}th Term<br><br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>th</sub></span><span style="background: red; font-size: 20px;padding:5px">-{{getTotalMinus()}}</span></button>
+            
+            </div><br>
+            <div style="height:210px; width: 300px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;top:-18px;position: relative;" class = 'desc'>
+            
+                <button v-bind:class={medal:true,wood:true} id = 'score'>Current Evolution<br><br><span style="font-size: 30px;">Not yet</span></button>
+            
+            </div><br>
+            <div style="height:210px; width: 300px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;top:-36px;position: relative;" class = 'desc'>
+            
+                <button v-bind:class={medal:true,wood:true} id = 'score' v-bind:style="{'background':'linear-gradient(90deg,'+GetFontColor()+' '+player.stemina+'%,black '+player.stemina+'%)'}">Stemina<br><br><span style="font-size: 30px;">{{formatWhole(player.stemina)+"%"}}</span><span style="background: red; font-size: 20px;padding:5px">-{{getTotalMinusStemina()}}</span></button>
+            
+            </div>
+        </td>
+        </div>
+        </div>
+</body>
+</html>
