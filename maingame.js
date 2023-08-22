@@ -11,6 +11,7 @@ const tabs = {
         Main() { return true },
         Game() { return true },
         Result() { return true },
+        Introduction() { return true },
     },
     options:
     {

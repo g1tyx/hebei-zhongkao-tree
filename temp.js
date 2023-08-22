@@ -9,10 +9,14 @@ function updateTempThought()
     if(player.stemina < 0) player.stemina = 0
     if(getState() == 'running') showTab('Game', 'normal')
     if(getState() == 'failed') showTab('Result', 'normal')
+    if (!tmp.cost) tmp.cost = {};
+	if (!tmp.eff) tmp.eff = {};
+	if (!tmp.extra) tmp.extra = {};
+    PresetUpgs()
 }
 
 function getState(){
     if(player.score == 0&&player.stemina <= 0) return 'out'
-    else if(player.score != 0&&player.stemina <= 0) return 'failed'
+    else if(player.score!=0&&player.stemina < 1) return 'failed'
     else return 'running'
 }

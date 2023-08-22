@@ -20,8 +20,22 @@ function getStartPlayer() {
 	scoreMult: 1,
 	stemina: 0,
 	stepStemina: 0,
+	random: 0,
 	bestRank: 1123,
+	evloveLeft: 30,
 	grid: [],
+	upgs: [],
+	display: {
+		upgs: false,
+	},
+    stepRating: {
+		current: [0,0,0,0,0,0,0,0,0,0],
+		all: [0,0,0,0,0,0,0,0,0,0]
+	},
+	balance: {
+		value: new Decimal(0),
+		total: new Decimal(0),
+	}
 	};
 	return p;
 }
@@ -29,12 +43,10 @@ function getStartPlayer() {
 function fixPlayer() {
 	let start = getStartPlayer();
 	addNewV(player, start);
+	for (let i=1;i<=TOTAL_UPGS;i++) player.upgs[i] = new Decimal(player.upgs[i]||0);
     //gridSetUp()
 }
 //检查player对象中是否有未定义对象，如果有替换为player初始值中的对应值，方便进一步游戏开发
-//真是的，谁愿意游戏开发过程中加变量后一个个定义数值啊啊啊啊啊
-//所以加入这个
-//==系统提示：作者由于废话被禁言15min==
 function addNewV(obj, start) {
 	for (let x in start) {
 		if (obj[x] === undefined) obj[x] = start[x]
@@ -63,14 +75,14 @@ function save() {
 }
 //导入存档
 function importSave() {
-	let data = prompt("粘贴你的存档: ")
+	let data = prompt("Paste your save: ")
 	if (data===undefined||data===null||data=="") return;
 	try {
 		player = JSON.parse(atob(data));
 		save()
 		window.location.reload();
 	} catch(e) {
-		console.log("导入失败!请检查你的存档的复制过程中是否有遗漏!");
+		console.log("Import failed! Please check if you have a right save.");
 		console.error(e);
 		return;
 	}
@@ -80,7 +92,7 @@ function exportSave() {
 	let data = btoa(JSON.stringify(player))
 	const a = document.createElement('a');
 	a.setAttribute('href', 'data:text/plain;charset=utf-8,' + data);
-	a.setAttribute('download', "fclwd_"+new Date()+".txt");
+	a.setAttribute('download', "Hebei Zhongkao Tree_"+new Date()+".txt");
 	a.setAttribute('id', 'downloadSave');
 
 	document.body.appendChild(a);
@@ -89,7 +101,7 @@ function exportSave() {
 }
 //重置游戏
 function hardReset() {
-	if (!confirm("你真的要重置游戏吗?这不会给予你任何加成!")) return;
+	if (!confirm("Are you sure to do a hard reset?! This won't give you any bonus!!!")) return;
 	player = getStartPlayer();
 	save();
 	window.location.reload();
@@ -98,7 +110,7 @@ function onClick(id){
 	player.stepScore = 0
 	player.stepStemina = -1
 	player.scoreMult = 1
-	if(id == player.current) player.current = 0 //搁这原地tp呢
+	if(id == player.current) player.current = 0 //原地tp给姐爬
 	else{
 		if(typeof(player.grid[player.current])=='number'&&NaNCheck(player.grid[player.current])<0) player.current = id //负数方块无法合并
 		else if(player.grid[player.current]==undefined) player.current = id
@@ -113,6 +125,8 @@ function onClick(id){
 					player.score -= getTotalMinus()
 					if(getTotalMinus()!=0)floatText('score', '-'+formatWhole(getTotalMinus()))
 					player.current = 0
+					player.evloveLeft -= 1
+					if(player.evloveLeft == 0) evloveAll()
 				}
 				else if(typeof(player.grid[id])=='number'&&NaNCheck(player.grid[id]) == player.grid[player.current]){ //相同数字方块
 				    player.grid[id] = player.grid[player.current]*2,player.stepScore += player.grid[id],player.stepStemina += Math.LOG2E*Math.log(player.grid[id])
@@ -122,8 +136,10 @@ function onClick(id){
 					player.score += player.stepScore
 					player.stemina += player.stepStemina
 					player.current = 0
-					if(player.stepStemina>=0)floatText('score', ''+formatWhole(player.stepScore))
-					else floatText('score', formatWhole(player.stepScore))
+					if(player.stepStemina>=0) getStepText(player.stepScore)
+					else getStepText(player.stepScore)
+					player.evloveLeft -= 1
+					if(player.evloveLeft == 0) evloveAll()
 				}
 				else player.current = id //无法合并的其他情况
 			}
@@ -136,55 +152,92 @@ function onClick(id){
 				player.score += player.stepScore
 				player.stemina += player.stepStemina
 	            player.current = 0
-				if(player.stepStemina>=0)floatText('score', ''+formatWhole(player.stepScore))
-				else floatText('score', formatWhole(player.stepScore))
+				if(player.stepStemina>=0) getStepText(player.stepScore)
+				else getStepText(player.stepScore)
+				player.evloveLeft -= 1
+				if(player.evloveLeft == 0) evloveAll()
 			}
 			else player.current = id
 		}
 	}
 }
 function getNewBlock(){
-    let random = Math.random()
-	if(getMaxBlock() <= 32){
-	    if(random <= 0.8) return 2
-	    else if(random <= 0.9) return 4
-	    else return -1
+    player.random = Math.random()
+	if(player.score <= 1000){
+	    if(player.random <= 0.9) return getRandomPositiveBlock(0.9)
+	    return -1
 	}
-	if(getMaxBlock() <= 64){
-		if(random <= 0.7) return 2
-		else if(random <= 0.85) return 4
-		else if(random <= 0.95) return -1
+	if(player.score <= 3000){
+		if(player.random <= 0.85) return getRandomPositiveBlock(0.85)
+		if(player.random <= 0.95) return -1
 		else return -2
 	}
-	if(getMaxBlock() <= 128){
-		if(random <= 0.6) return 2
-		else if(random <= 0.8) return 4
-		else if(random <= 0.9) return -1
+	if(player.score <= 7000){
+		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
+		if(player.random <= 0.9) return -1
 		else return -2
 	}
-	if(getMaxBlock() <= 256){
-		if(random <= 0.6) return 2
-		else if(random <= 0.8) return 4
-		else if(random <= 0.9) return -1
-		else if(random <= 0.95) return -2
+	if(player.score <= 12000){
+		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
+		if(player.random <= 0.9) return -1
+		else if(player.random <= 0.95) return -2
 		else return -4
 	}
-	if(getMaxBlock() <= 512){
-		if(random <= 0.6) return 2
-		else if(random <= 0.8) return 4
-		else if(random <= 0.9) return -2
-		else if(random <= 0.95) return -4
+	if(player.score <= 30000){
+		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
+		if(player.random <= 0.9) return -2
+		else if(player.random <= 0.95) return -4
 		else return -8
 	}
-	if(getMaxBlock() <= 1024){
-		if(random <= 0.6) return 2
-		else if(random <= 0.8) return 4
-		else if(random <= 0.9) return -4
-		else if(random <= 0.95) return -8
+	else{
+		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
+		if(player.random <= 0.9) return -4
+		else if(player.random <= 0.95) return -8
 		else return -16
 	}
 }
+
+function getEvloveFactor(){
+	let base = 40
+	if(player.score>=1000) base += 40
+	if(player.score>=3000) base += 55
+	if(player.score>=7000) base += 70
+	if(player.score>=12000) base += 90
+	if(player.score>=30000) base += 110
+	if(player.score>=70000) base += Math.sqrt(player.score-70000)**0.8
+	return base
+}
+
+function getEvloveTurns(){
+	return 10
+}
+
+function getRandomPositiveBlock(base){
+    if(getBlockFactor()<=100){
+		if(player.random<=(100-getBlockFactor())/100*base) return 2
+		else if(player.random<=base) return 4
+	}
+	else if(getBlockFactor()<=1000){
+		if(player.random<=(100-getBlockFactor()/10)/100*base) return 4
+		else if(player.random<=base) return 8
+	}
+	else if(getBlockFactor()<=10000){
+		if(player.random<=(100-getBlockFactor()/100)/100*base) return 8
+		else if(random<=base) return 16
+	}
+	else if(getBlockFactor()<=100000){
+		if(player.random<=(100-getBlockFactor()/1000)/100*base) return 16
+		else if(player.random<=base) return 32
+	}
+	else return 64
+}
+
+function getBlockFactor(){
+	return 10+Number(getUpgEff(2))
+}
+
 function skipPending(id1,id2,number){ //判定能否消除途经方块
+	player.scoremult += getUpgEff(3)
 	if(Number(id2) < Number(id1)){
 		id1 = {id1:id2,id2:id1}
 		id2 = id1.id2
@@ -217,28 +270,33 @@ const LEVEL_DATA = {
 	}
 }
 
-function floatText(id, text, leftOffset=200) {
+function floatText(id, text, leftOffset=200, color = 'white') {
     var el = $("#" + id)
-    el.append("<div class='floatingText' style='left: " + leftOffset + "px;position:relative'>" + text + "</div>")
+    el.append("<div class='floatingText' style='left: " + leftOffset + "px;position:relative;color:"+color+"'>" + text + "</div>")
     setTimeout(function() {
         el.children()[4].remove()
     }, 1000)
 }
 
 function startGame(){
+	if(player.bestRank == 1123) {
+		if(!confirm("It's your first time playing this game. Do you want to read introduction of this game[Cancel] or start game now[Confirm]?")){
+			showTab('Introduction','normal')
+			return
+		}
+	}
 	player.stemina = 20
 	player.score = 0
 	player.try += 1
+	player.evloveLeft = 30
 	gridSetUp()
+	if(player.upgs[1]>=1) player.grid[43] = Number(getUpgEff(1))
 	showTab('Game', 'normal')
 }
-
-/*
-setInterval(function(){
-	floatText('score', '+1.798e308')
+/*setInterval(function(){
+	getStepText(19000000000000)
 },1000)
 */
-
 function GetFontColor()
 {
     if(player.stemina>98) return 'cyan'
@@ -249,15 +307,42 @@ function GetFontColor()
 
 function calcRank()
 {
+	if(player.score<0) return 1123
 	if(player.score<1230) return 1123-player.score/10
 	else if(player.score<3230) return 1000-(player.score-1230)/20
 	else if(player.score<6230) return 900-(player.score-3230)/30
 	else if(player.score<12230) return 800-(player.score-6230)/60
+	else if(player.score<20230) return 700-(player.score-12230)/90
+	else if(player.score<50230) return 600-(player.score-20230)/300
+	else return 500
 }
 
 function endGame()
 {
 	if(calcRank()<player.bestRank) player.bestRank = calcRank()
+	player.balance.value = player.balance.value.add(calcBalance())
+	player.balance.total = player.balance.total.add(calcBalance())
 	player.score = 0
+	for(var i = 0; i <= 9; i++){
+		player.stepRating.all[i] += player.stepRating.current[i]
+		player.stepRating.current[i] = 0
+	}
 	showTab('Main', 'normal')
+}
+
+function calcBalance(){
+    let base = new Decimal(player.score).div(2)
+	for(var i = 1; i <= 9; i++){
+		base = base.mul(Math.pow(player.stepRating.current[i],1/6)+1)
+	}
+	base = base.mul(getUpgEff(4))
+	return base
+}
+
+function getImage(money){
+    if(money.lt(100)) return 'https://i.postimg.cc/dVQS2RM4/1dollar.jpg'
+	else if(money.lt(10000)) return 'https://i.postimg.cc/xjtmkLR0/100dollar.jpg'
+	else if(money.lt(1e6)) return 'https://i.postimg.cc/wxftxgqM/10-4dollar.png'
+	else if(money.lt(1e8)) return 'https://i.postimg.cc/j59r9gTx/10-6dollar.png'
+	else return 'https://i.postimg.cc/mgwkqs5T/10-8dollar.png'
 }
