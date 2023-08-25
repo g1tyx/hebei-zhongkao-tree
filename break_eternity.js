@@ -2811,7 +2811,7 @@ function format(decimal, precision = 2, small) {
         return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)
     }
     else if (decimal.gte("1e1000000")) return exponentialFormat(decimal, 0, false)
-    else if (decimal.gte("1e5")) return exponentialFormat(decimal, 2)
+    else if (decimal.gte("1e9")) return exponentialFormat(decimal, 2)
     else if (decimal.gte(0.0001) || !small) return regularFormat(decimal, precision)
     else if (decimal.eq(0)) return (0).toFixed(precision)
 

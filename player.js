@@ -25,8 +25,14 @@ function getStartPlayer() {
 	evloveLeft: 30,
 	grid: [],
 	upgs: [],
+	last: {
+        grid: [],
+		score: 0,
+		freeUndo: 1,
+	},
 	display: {
 		upgs: false,
+		graduate: false,
 	},
     stepRating: {
 		current: [0,0,0,0,0,0,0,0,0,0],
@@ -119,6 +125,7 @@ function onClick(id){
             if(!(player.current[0]==id[0]||player.current[1]==id[1])) {player.current = id;return} //不同行同列无法合并
 			else if(player.current == id+1||player.current == id-1||player.current == id-10||player.current == id+10){ //相邻方块
 				if(player.grid[id] == 'nothing'){ //空位
+					recordGrid()
 				    player.grid[id] = player.grid[player.current]
 					player.grid[player.current] = getNewBlock()
 					player.stemina -= (1+getTotalMinusStemina())
@@ -129,7 +136,8 @@ function onClick(id){
 					if(player.evloveLeft == 0) evloveAll()
 				}
 				else if(typeof(player.grid[id])=='number'&&NaNCheck(player.grid[id]) == player.grid[player.current]){ //相同数字方块
-				    player.grid[id] = player.grid[player.current]*2,player.stepScore += player.grid[id],player.stepStemina += Math.LOG2E*Math.log(player.grid[id])
+					recordGrid()
+				    player.grid[id] = player.grid[player.current]*2,player.stepScore += player.grid[id]*ScoreMult(),player.stepStemina += Math.LOG2E*Math.log(player.grid[id])
 					player.grid[player.current] = getNewBlock()
 					player.stepScore -= getTotalMinus()
 					player.stepStemina -= getTotalMinusStemina()
@@ -145,7 +153,7 @@ function onClick(id){
 			}
 			else if((player.current.toString()[0] == id.toString()[0]||player.current.toString()[1] == id.toString()[1])&&(typeof(player.grid[id])=='number'&&NaNCheck(player.grid[id]) == player.grid[player.current])){ //可以跳跃合并(无新方块生成)
 				if(typeof(player.grid[id])=='number'&&NaNCheck(player.grid[id]) == player.grid[player.current]) skipPending(id.toString(),player.current.toString(),player.grid[player.current])
-				player.grid[id] = player.grid[player.current]*2,player.stepScore += player.grid[id]*player.scoreMult,player.stepStemina += Math.LOG2E*Math.log(player.grid[id])
+				player.grid[id] = player.grid[player.current]*2,player.stepScore += player.grid[id]*player.scoreMult*ScoreMult(),player.stepStemina += Math.LOG2E*Math.log(player.grid[id])
 				player.grid[player.current] = 'nothing'
 				player.stepScore -= getTotalMinus()
 				player.stepStemina -= getTotalMinusStemina()
@@ -163,27 +171,27 @@ function onClick(id){
 }
 function getNewBlock(){
     player.random = Math.random()
-	if(player.score <= 1000){
+	if(player.score <= 1000*ScoreMult()){
 	    if(player.random <= 0.9) return getRandomPositiveBlock(0.9)
 	    return -1
 	}
-	if(player.score <= 3000){
+	if(player.score <= 3000*ScoreMult()){
 		if(player.random <= 0.85) return getRandomPositiveBlock(0.85)
 		if(player.random <= 0.95) return -1
 		else return -2
 	}
-	if(player.score <= 7000){
+	if(player.score <= 7000*ScoreMult()){
 		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
 		if(player.random <= 0.9) return -1
 		else return -2
 	}
-	if(player.score <= 12000){
+	if(player.score <= 12000*ScoreMult()){
 		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
 		if(player.random <= 0.9) return -1
 		else if(player.random <= 0.95) return -2
 		else return -4
 	}
-	if(player.score <= 30000){
+	if(player.score <= 30000*ScoreMult()){
 		if(player.random <= 0.8) return getRandomPositiveBlock(0.8)
 		if(player.random <= 0.9) return -2
 		else if(player.random <= 0.95) return -4
@@ -197,19 +205,29 @@ function getNewBlock(){
 	}
 }
 
+function ScoreMult(){
+	let mult = 1
+	if(player.upgs[7].gte(1)) mult *= (Number(getUpgEff(7))*(player.stemina+1)+1)
+	if(player.upgs[5].gte(1)) mult *= 1.3
+	return mult
+}
+
 function getEvloveFactor(){
 	let base = 40
-	if(player.score>=1000) base += 40
-	if(player.score>=3000) base += 55
-	if(player.score>=7000) base += 70
-	if(player.score>=12000) base += 90
-	if(player.score>=30000) base += 110
-	if(player.score>=70000) base += Math.sqrt(player.score-70000)**0.8
+	if(player.score>=(1000*ScoreMult())) base += 40
+	if(player.score>=(3000*ScoreMult())) base += 55
+	if(player.score>=(7000*ScoreMult())) base += 70
+	if(player.score>=(12000*ScoreMult())) base += 90
+	if(player.score>=(30000*ScoreMult())) base += 110
+	if(player.score>=(70000*ScoreMult())) base += Math.sqrt(player.score-70000)**0.8
 	return base
 }
 
 function getEvloveTurns(){
-	return 10
+	let turns = 10+Number(getUpgEff(9))
+	if(player.score >= 100000) turns = Math.floor(turns/2)
+	if(player.score >= 220000) turns = Math.floor(turns/1.6)
+	return turns
 }
 
 function getRandomPositiveBlock(base){
@@ -223,10 +241,10 @@ function getRandomPositiveBlock(base){
 	}
 	else if(getBlockFactor()<=10000){
 		if(player.random<=(100-getBlockFactor()/100)/100*base) return 8
-		else if(random<=base) return 16
+		else if(player.random<=base) return 16
 	}
-	else if(getBlockFactor()<=100000){
-		if(player.random<=(100-getBlockFactor()/1000)/100*base) return 16
+	else if(getBlockFactor()<=1000000){
+		if(player.random<=(100-getBlockFactor()/10000)/100*base) return 16
 		else if(player.random<=base) return 32
 	}
 	else return 64
@@ -238,6 +256,7 @@ function getBlockFactor(){
 
 function skipPending(id1,id2,number){ //判定能否消除途经方块
 	player.scoremult += getUpgEff(3)
+	recordGrid()
 	if(Number(id2) < Number(id1)){
 		id1 = {id1:id2,id2:id1}
 		id2 = id1.id2
@@ -290,7 +309,7 @@ function startGame(){
 	player.try += 1
 	player.evloveLeft = 30
 	gridSetUp()
-	if(player.upgs[1]>=1) player.grid[43] = Number(getUpgEff(1))
+	if(player.upgs[1]>=1) player.grid[43] = Number(getUpgEff(1).round())
 	showTab('Game', 'normal')
 }
 /*setInterval(function(){
@@ -314,7 +333,8 @@ function calcRank()
 	else if(player.score<12230) return 800-(player.score-6230)/60
 	else if(player.score<20230) return 700-(player.score-12230)/90
 	else if(player.score<50230) return 600-(player.score-20230)/300
-	else return 500
+	else if(player.score<350230) return 500-(player.score-50230)/3000
+	else if(player.score<1550230) return 400-(player.score-350230)/12000
 }
 
 function endGame()
@@ -323,6 +343,7 @@ function endGame()
 	player.balance.value = player.balance.value.add(calcBalance())
 	player.balance.total = player.balance.total.add(calcBalance())
 	player.score = 0
+	player.last.freeUndo = Number(player.upgs[5])
 	for(var i = 0; i <= 9; i++){
 		player.stepRating.all[i] += player.stepRating.current[i]
 		player.stepRating.current[i] = 0
@@ -336,6 +357,7 @@ function calcBalance(){
 		base = base.mul(Math.pow(player.stepRating.current[i],1/6)+1)
 	}
 	base = base.mul(getUpgEff(4))
+	base = base.mul(getUpgEff(8))
 	return base
 }
 
@@ -345,4 +367,17 @@ function getImage(money){
 	else if(money.lt(1e6)) return 'https://i.postimg.cc/wxftxgqM/10-4dollar.png'
 	else if(money.lt(1e8)) return 'https://i.postimg.cc/j59r9gTx/10-6dollar.png'
 	else return 'https://i.postimg.cc/mgwkqs5T/10-8dollar.png'
+}
+
+function graduate(){
+	if(calcRank()>400||getMaxBlock()<2048) alert('You have not met the requirements of graduation now!')
+	else alert('Coming soon...')
+}
+
+function getEnd(arr){
+	var a = arr.toString()
+	if(a[a.length-1]=='1') return 'st'
+	if(a[a.length-1]=='2') return 'nd'
+	if(a[a.length-1]=='3') return 'rd'
+	else return 'th'
 }

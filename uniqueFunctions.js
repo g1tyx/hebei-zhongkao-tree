@@ -18,9 +18,35 @@ function gridSetUp()
 		for (var j=1; j<=9; j++)
 		{
 	        player.grid[i*10+j] = 'nothing'
+			player.last.grid[i*10+j] = 'nothing'
 		}
 	}
 	player.grid[33] = 2
+	player.last.grid[33] = 2
+}
+
+function recordGrid(){
+	for(var i=1; i<=9; i++)
+	{
+		for (var j=1; j<=9; j++)
+		{
+	        player.last.grid[i*10+j] = player.grid[i*10+j]
+		}
+	}
+	player.last.score = player.score
+}
+
+function pasteGrid(){
+	for(var i=1; i<=9; i++)
+	{
+		for (var j=1; j<=9; j++)
+		{
+	        player.grid[i*10+j] = player.last.grid[i*10+j]
+		}
+	}
+	player.score = player.last.score
+	if(player.last.freeUndo > 0) player.last.freeUndo -= 1
+	else player.stemina = Math.floor(player.stemina*0.1)
 }
 
 function getMaxBlock()

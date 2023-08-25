@@ -5,7 +5,7 @@ function updateTemp() {
 function updateTempThought()
 {
     tmp.currSize = 5
-    if(player.stemina > 100) player.stemina = 100
+    if(player.stemina > (100+Number(UPG_DATA[11].eff(player.upgs[11])))) player.stemina = (100+Number(UPG_DATA[11].eff(player.upgs[11])))
     if(player.stemina < 0) player.stemina = 0
     if(getState() == 'running') showTab('Game', 'normal')
     if(getState() == 'failed') showTab('Result', 'normal')

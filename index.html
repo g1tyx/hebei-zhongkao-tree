@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hebei Zhongkao Tree[Pertubed SFGirls]</title>
+    <title>Hebei Zhongkao Tree[Irritated SFGirls]</title>
     <style>
 *{
     text-align: center;
@@ -584,7 +584,25 @@ body
     border-radius: 5px;
     text-shadow: 0px 4px 4px #ffffff;
     font-size: 20px;
-    margin: 5px;
+    margin: 2px;
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+.menuGreen.unlocked:hover{
+    color: black;
+    background: lime;
+}
+.menuGreen.unlocked {
+    color: white;
+    background: #000000;
+    border: 3px solid lime;
+    width: 350px;
+    height: 70px;
+    margin-left: 5px;
+    border-radius: 5px;
+    text-shadow: 0px 4px 4px #ffffff;
+    font-size: 20px;
+    margin: 2px;
     padding: 10px 10px 10px 10px;
     cursor: pointer;
 }
@@ -597,7 +615,7 @@ body
     margin-left: 5px;
     border-radius: 5px;
     font-size: 20px;
-    margin: 5px;
+    margin: 2px;
     padding: 10px 10px 10px 10px;
     cursor: pointer;
 }
@@ -706,7 +724,7 @@ body
     100% { bottom: 50px; opacity: 0;}
 }
 
-#overlay {
+.overlay {
     position: fixed;
     left: 0px;
     top: 0px;
@@ -718,10 +736,10 @@ body
 .popup {
     background-color: #000000;
     border: 3px solid cyan;
-    height: 600px;
+    height: 900px;
     width: 1300px;
     border-radius: 5px;
-    margin: 60px auto;
+    margin: 20px auto;
     font-size: 20px;
 }
 
@@ -734,6 +752,10 @@ body
 .popup_bottonContainer {
     padding-bottom: 10px;
     position: relative;
+}
+
+.highlight{
+    border: #FFFFFF solid 5px !important; 
 }
 
     </style>
@@ -750,18 +772,42 @@ body
 </head>
 <body onload="loadGame()">
     <div id="app">
-        <div id="overlay" v-if="player.display.upgs" style="z-index: 999;">
+        <div class="overlay" v-if="player.display.upgs" style="z-index: 999;">
             <div class = 'popup'>
                 <p class = 'popup_title'>Scholarship Upgrades</p>
                 <table>
                     <tr v-for="r in UPG_DATA.rows">
-                        <td v-for="(n,i) in UPG_DATA.rowData[r]"><button style="position: relative; font-size: 13px;width: 291.5px;height: 180px" v-bind:class="{unlocked: player.balance.value.gte(tmp.cost[n]), locked: player.balance.value.lt(tmp.cost[n]), menu:true}" v-on:click="buyUpg(n)"><span class="thoughtfont" style="position: absolute; top: 0;right: 90px;color:cyan">Upgrade {{n}}</span><h3 v-bind:style="{'margin-bottom': 0}">{{UPG_DATA[n].title()}}</h4><br>Level:<span class="thoughtfont" style="color:cyan">{{formatWhole(player.upgs[n])+(tmp.extra[n].gt(0)?(" + "+formatWhole(tmp.extra[n])):"")}}</span><br>Currently:<span v-if="UPG_DATA[n].pref!==undefined" v-html="UPG_DATA[n].pref" class="thoughtfont" style="color: cyan;"></span><span class="thoughtfont" style="color: cyan;">{{format(tmp.eff[n])}}</span><br>Cost: <b class="thoughtfont" v-bind:style="{color:formatMoney(tmp.cost[n])[3]}">{{formatMoney(tmp.cost[n])[0]}}</b>
+                        <td v-for="(n,i) in UPG_DATA.rowData[r]"><button style="position: relative; font-size: 13px;width: 291.5px;height: 160px" v-bind:class="{unlocked: player.balance.value.gte(tmp.cost[n]), locked: player.balance.value.lt(tmp.cost[n]), menu:true}" v-on:click="buyUpg(n)"><span class="thoughtfont" style="position: absolute; top: 0;right: 90px;color:cyan">Upgrade {{n}}</span><h3 v-bind:style="{'margin-bottom': 0}">{{UPG_DATA[n].title()}}</h4><br>Level:<span class="thoughtfont" style="color:cyan">{{formatWhole(player.upgs[n])+(tmp.extra[n].gt(0)?(" + "+formatWhole(tmp.extra[n])):"")}}</span><br>Currently:<span v-if="UPG_DATA[n].pref!==undefined" v-html="UPG_DATA[n].pref" class="thoughtfont" style="color: cyan;"></span><span class="thoughtfont" style="color: cyan;">{{format(tmp.eff[n])}}</span><br>Cost: <b class="thoughtfont" v-bind:style="{color:formatMoney(tmp.cost[n])[3]}">{{formatMoney(tmp.cost[n])[0]}}</b>
                             <b class="thoughtfont" v-bind:style="{color:formatMoney(tmp.cost[n])[4]}">{{formatMoney(tmp.cost[n])[1]}}</b>
                             <b class="thoughtfont" v-bind:style="{color:formatMoney(tmp.cost[n])[5]}">{{formatMoney(tmp.cost[n])[2]}}</b></button></td>
                     </tr>
                 </table><br>
                 <div class = 'popup_bottonContainer'>
                     <button v-bind:class={unlocked:true,menu:true} onclick="player.display.upgs = false"> Close </button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" v-if="player.display.graduate" style="z-index: 999;">
+            <div class = 'popup' style="border-color: lime; width:600px; height: 700px;">
+                <p class = 'popup_title'>Graduation</p>
+                Graduation Requirement<br>
+                1. Not in any versus challenge <b class="thoughtfontsml" style="color: lime;">(true)</b><br>
+                2. Highest value block in grid <b class="thoughtfontsml" v-bind:style="{'color': getMaxBlock()>=2048? 'lime': 'red'}">({{getMaxBlock()}} / 2048)</b><br>
+                3. Reach a rank of top 400 <b class="thoughtfontsml" v-bind:style="{'color': calcRank()<=400? 'lime': 'red'}">({{formatWhole(Math.max(calcRank()-400,0))}} lower)</b><br>
+                <br>
+                <div style="height:300px; width: 500px; background-color:#000000 ;border: 3px solid lime;border-radius: 10px;font-size: 20px;margin-left: 50px;text-align: center;" class = 'desc'>
+                    <br><br><b v-if="(calcRank()>400||getMaxBlock()<2048)">Meet Requirement to see your graduation stats.</b>
+                    <div v-if="calcRank()<=400&&getMaxBlock()>=2048">
+                         Your total talent after your progression to high school:<br>
+                         <a class="thoughtfont" style="color:rgb(201, 240, 255)"> {{formatWhole(10+(400-calcRank())*0.05)}}</a>(Township general middle school)<br>
+                         Intelligence talent: <a class="thoughtfont" style="color:rgb(201, 240, 255)">3 ~ 5</a><br>
+                         Emotional talent: <a class="thoughtfont" style="color:rgb(201, 240, 255)">3 ~ 5</a><br>
+                         Manage talent: <a class="thoughtfont" style="color:rgb(201, 240, 255)">3 ~ 5</a>
+                    </div>
+            </div><br>
+                <div class = 'popup_bottonContainer'>
+                    <button v-bind:class={unlocked:true,menuGreen:true} style="width:45%" onclick="graduate()"> Graduate now! </button>
+                    <button v-bind:class={unlocked:true,menuGreen:true} style="width:45%" onclick="player.display.graduate = false"> Close </button>
                 </div>
             </div>
         </div>
@@ -782,7 +828,7 @@ body
     </div>
     </div>
         <div v-if="tab.normal=='Main'">
-            <span class="desc" style="color: #000000;font-size: 50px ;background-color: #dd3333 ;padding:5px ; text-shadow: none;">Hebei</span><span class="desc" style="color: rgb(255, 95, 159);font-size: 50px;"> Zhongkao Tree</span><span class="desc" style="color: white;font-size: 50px;"> [Beta Version]<sub> ver.Pertubed SFGirls</sub></span><br>
+            <span class="desc" style="color: #000000;font-size: 50px ;background-color: #dd3333 ;padding:5px ; text-shadow: none;">Hebei</span><span class="desc" style="color: rgb(255, 95, 159);font-size: 50px;"> Zhongkao Tree</span><span class="desc" style="color: white;font-size: 50px;"> [Beta Version]<sub> ver.Irritated SFGirls</sub></span><br>
             <table style="position: relative;">
                 <tr>
                     <td>
@@ -795,7 +841,7 @@ body
                         <button v-bind:class={unlocked:true,menu:true} onclick="alert('Coming Soon!')"> Equipments </button><br><br>
                         <br>
                         <button v-bind:class={unlocked:true,menu:true} onclick="startGame()"> Causal Mode </button><br>
-                        <button v-bind:class={locked:true,menu:true}> Reach Rank-400 in Casual<br> Mode to unlock. </button><br>
+                        <button v-bind:class={locked:true,menu:true}> Graduate for one time to<br> unlock. </button><br>
                         <button v-bind:class={locked:true,menu:true}> Reach Rank-100 in Casual<br> Mode to unlock. </button><br>
                     </div>
                     </td>
@@ -804,7 +850,7 @@ body
                            <br>
                            == Statistics ==<br><br>
                            Best Score:<br>
-                           <button v-bind:class={medal:true,wood:true}>1st Term<br><br><span style="font-size: 50px;">{{formatWhole(player.bestRank)}}<sub>th</sub></span></button><br><br>
+                           <button v-bind:class={medal:true,wood:true}>1st Term<br><br><span style="font-size: 50px;">{{formatWhole(player.bestRank)}}<sub>{{getEnd(formatWhole(player.bestRank))}}</sub></span></button><br><br>
                            <img v-bind:src="getImage(player.balance.value)" width="230" height="230">
                        </div>
                     </td>
@@ -830,7 +876,7 @@ body
             <table><tr><td>
             <div style="height:700px; width: 500px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
             
-                <button v-bind:class={medal:true,wood:true}>Final Score<br><br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>th</sub></span></button><br>
+                <button v-bind:class={medal:true,wood:true}>Final Score<br><br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>{{getEnd(formatWhole(calcRank()))}}</sub></span></button><br>
                 Fallen_Cat exhausted all her stemina and Got a rank of {{formatWhole(calcRank())}} / 1123 in her Final Exam!<br><br>
                 Try to buy upgrades and get better rank next time!<br>
                 You gain:
@@ -855,7 +901,7 @@ body
             <details style="left:270px;position: relative;" id="general">
                 <summary style="color:#000000;position:relative;">1-1 General</summary>
                 <ul>
-                    <li><span style="border: 2px solid aqua ;color:white ; padding:3px; margin:5px">1-1-1</span><span style="color: white;">Welcome to my new game: Hebei Zhongkao Tree!(currently version: Perturbed SFGirls, Realised in August 22nd, 2023).</span></li>
+                    <li><span style="border: 2px solid aqua ;color:white ; padding:3px; margin:5px">1-1-1</span><span style="color: white;">Welcome to my new game: Hebei Zhongkao Tree!(currently version: Irritated SFGirls, Realised in August 25th, 2023).</span></li>
                     <li><span style="border: 2px solid aqua ;color:white ; padding:3px; margin:5px">1-1-2</span><span style="color: white;">The author of this game: SFGirls [ <span style="color: hotpink; text-underline-position: above;">Fallen_Cat(Female, Age 14)</span> && <span style="color: turquoise; text-underline-position: above;">Xiaosu_offical(Female, Age 12)</span> ].</span></li>
                     <li><span style="border: 2px solid aqua ;color:white ; padding:3px; margin:5px">1-1-3</span><span style="color: white;">The game is only published in g8hh.com and galaxy.</span></li>
                     <li><span style="border: 2px solid aqua ;color:white ; padding:3px; margin:5px">1-1-4-5-1-4-1-9-1-9-8-1-0</span><span style="color: red; text-underline-position: above;">This game is still in beta version, so it has not been adapted to mobile devices yet. Mobile players, please wait for the next game version to be released. We are very sorry. Please use computer or iPad to play this game.</span></li>
@@ -875,7 +921,7 @@ body
                 <ul>
                     <li><span style="border: 2px solid aquamarine ;color:white ; padding:3px; margin:5px">2-2-1</span><span style="color: white;"><span style="color: grey; text-decoration: underline;">Feature: Grid</span> There is a 5x5-grid in the main game. Every unit of grid can contain a <span style="color: lime; text-underline-position: above;">notebook block</span> or a <span style="color: red; text-underline-position: above;">question block</span>. Grid resets when you starts a new game.</span></li>
                     <li><span style="border: 2px solid lime ;color:white ; padding:3px; margin:5px">2-2-2</span><span style="color: white;"><span style="color: lime; text-decoration: underline;">Feature: Notebook Block</span> <button class="tier1 unlocked">2</button>>>><button class="tier2 unlocked">4</button>>>><button class="tier3 unlocked">8</button>>>><button class="tier4 unlocked">16</button><br><span style="color: lime; text-underline-position: above;">Notebook block</span> is a kind of block which look like a positive-number block in the grid. Every <span style="color: yellow; text-underline-position: above;">block generation</span> will have a large probability to generate a <span style="color: lime; text-underline-position: above;">Notebook block</span>. When 2 <span style="color: lime; text-underline-position: above;">notebook blocks</span> with a same value merged, you'il gain some score and some <span style="color: cyan; text-underline-position: above;">stemina</span>, a higher-value <span style="color: lime; text-underline-position: above;">notebook block</span> will be created as well.(2->4->8->16, etc.)</li>
-                    <li><span style="border: 2px solid lime ;color:white ; padding:3px; margin:5px">2-2-3</span><span style="color: white; text-decoration: underline;">Feature: Merge</span><br><button class="tier1 unlocked" style="border-color: blue;">2<br>(Can Merge)</button><button class="tier1 unlocked">2<br>(Can't Merge)</button><br><button class="tier0 unlocked" style="font-size: 10px;color: lime;">-1<br>(When blue and red merged, it can be eliminated)</button><br><button class="tier0 unlocked" style="font-size: 10px;color: red;">-2<br>(When blue and red merged, it *can't* be eliminated)</button><br><button class="tier1 unlocked" style="border-color: red;">2<br>(Main Block)<br> </button><button class="tier1 unlocked" style="border-color: yellow;">2<br>(Can Merge)</button><br><button class="nothing unlocked" style="border-color: blueviolet;">(Can Move to here)</button><button class="nothing unlocked">(Can't Move to here)</button><br>When 2 <span style="color: lime; text-underline-position: above;">notebook blocks</span> with the same value are in the same row or in the same column, they can be synthesized, and <span style="color: red; text-underline-position: above;">question blocks</span> with smaller absolute values across the middle are eliminated. You can move a <span style="color: lime; text-underline-position: above;">notebook block</span> to the space above and below, left and right, and cause a <span style="color: yellow; text-underline-position: above;">block generation</span> in past place.<br><i style="color: grey;">If you can't understand this feature well, the diagram above the text maybe help you.</i></li>
+                    <li><span style="border: 2px solid lime ;color:white ; padding:3px; margin:5px">2-2-3</span><span style="color: white; text-decoration: underline;">Feature: Merge</span><br><button class="tier1 unlocked" style="border-color: blue;">2<br>(Can Merge)</button><button class="tier1 unlocked">2<br>(Can't Merge)</button><br><button class="tier0 unlocked" style="font-size: 10px;color: lime;">-1<br>(When blue and red merged, it can be eliminated)</button><br><button class="tier0 unlocked" style="font-size: 10px;color: red;">-2<br>(When blue and red merged, it *can't* be eliminated)</button><br><button class="tier1 unlocked" style="border-color: red;">2<br>(Main Block)<br> </button><button class="tier1 unlocked" style="border-color: yellow;">2<br>(Can Merge)</button><br><button class="nothing unlocked" style="border-color: blueviolet;">(Can Move to here)</button><button class="nothing unlocked">(Can't Move to here)</button><br>The current tile can jump to the nearest open space or same number tile in each of the four cardinal directions. Any smaller negative blocks jumped this way will be removed. if you don't jump, then a new tile is generated where you left.<br><i style="color: grey;">If you can't understand this feature well, the diagram above the text maybe help you.</i></li>
                     <li><span style="border: 2px solid lime ;color:white ; padding:3px; margin:5px">2-2-4</span><span style="color: white;"><span style="color: red; text-decoration: underline;">Feature: Question Block</span> <button class="tier0 unlocked">-1</button><br><span style="color: red; text-underline-position: above;">Question block</span> is a kind of block which look like a negative-number block in the grid. Every <span style="color: yellow; text-underline-position: above;">block generation</span> will have a small probability to generate a <span style="color: red; text-underline-position: above;">question block</span>. You will lose score and <span style="color: cyan; text-underline-position: above;">stemina</span> every turn if some <span style="color: red; text-underline-position: above;">question blocks</span> is in the grid. The way to eliminate <span style="color: red; text-underline-position: above;">question blocks</span> is in <span style="color: lime; text-underline-position: above;">2-2-3</span>.</li>
                     <li><span style="border: 2px solid aquamarine ;color:white ; padding:3px; margin:5px">2-2-5</span><span style="color: white;"><span style="color: white; text-decoration: underline;">Feature: Score & Rank</span> Every time when you move or merge blocks, you will gain or lose some score. Your rank depends on your score. The higher difficuty you choose or higher score you have, the harder your score-increasing will be. You can see how high your score and rank is in the upper-right corner on the page.<br><i style="color: darkred; text-underline-position: above;">Caution: When your score get higher, the game will get harder as well. Be careful to play the game when you have a high score.</i></li>
                     <li><span style="border: 2px solid lime ;color:white ; padding:3px; margin:5px">2-2-6</span><span style="color: white;"><span style="color: cyan; text-decoration: underline;">Feature: Stamina</span> Every time when you move or merge blocks, you will gain or lose some <span style="color: cyan; text-underline-position: above;">stemina</span> (start at 20). The <span style="color: cyan; text-underline-position: above;">stemina</span> is limited at 100% without any boost. <span style="color: red; text-underline-position: above;">When it is below 1%, you'll lose the game.</span></i></li>
@@ -916,6 +962,8 @@ body
         </div>
         <div v-if="tab.normal=='Game'">
             <div style="position: absolute; right: 5px; top: 5px; font-size: 20px"><button v-bind:class="{menu:true, unlocked:true}" style="height: 50px;width:120px" onclick="player.stemina = -1,player.score+=1">Give Up</button></div>
+            <div style="position: absolute; right: 5px; top: 60px; font-size: 20px"><button v-bind:class="{menu:true, unlocked:true}" style="height: 50px;width:120px" onclick="pasteGrid()" v-if="player.upgs[5].gte(1)">Undo ({{player.last.freeUndo}})</button></div>
+            <div style="position: absolute; right: 5px; top: 115px; font-size: 20px"><button v-bind:class="{menuGreen:true, unlocked:true}" style="height: 50px;width:120px" onclick="player.display.graduate = true" v-if="calcRank()<=500">Graduation</button></div>
             <table>
                 <tr>
                     <td>
@@ -930,7 +978,7 @@ body
         <td>
             <div style="height:210px; width: 300px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;" class = 'desc'>
             
-                <button v-bind:class={medal:true,wood:true} id = 'score'>{{player.try}}th Term<br>Raw score {{formatWhole(player.score)}}<br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>th</sub></span><span style="background: red; font-size: 20px;padding:5px">-{{getTotalMinus()}}</span></button>
+                <button v-bind:class={medal:true,wood:true} id = 'score'>{{player.try}}{{getEnd(player.try)}} Term<br>Raw score {{formatWhole(player.score)}}<br><span style="font-size: 50px;">Rank: {{formatWhole(calcRank())}}<sub>{{getEnd(formatWhole(calcRank()))}}</sub></span><span style="background: red; font-size: 20px;padding:5px">-{{getTotalMinus()}}</span></button>
             
             </div><br>
             <div style="height:210px; width: 300px; background-color:#000000 ;border: 3px solid cyan;border-radius: 10px;font-size: 20px;top:-18px;position: relative;" class = 'desc'>
