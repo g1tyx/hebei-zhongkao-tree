@@ -24,7 +24,7 @@ var UPG_DATA = {
         title() { return 'Add to the base of jump-merging bonus.'},
         pref: "+",
         targ() {return new Decimal(10000)},
-        cost(x) { return Decimal.mul(Decimal.pow(3,x),10000).floor().mul(player.upgs[3].gte(5)?1e32:0)},
+        cost(x) { return Decimal.mul(Decimal.pow(3,x),10000).floor().mul(player.upgs[3].gte(5)?1e32:1)},
         eff(x) { return Decimal.mul(0.1,x) }
     },
     4:{ //已实现
