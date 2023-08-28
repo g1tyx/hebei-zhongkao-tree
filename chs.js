@@ -110,7 +110,7 @@ var cnItems = {
     "block generation": "方块生成",
     "Best Score:": "最好分数：",
     "But there are only 4 in the current version": "但目前版本只有4个",
-    "Causal Mode": "因果模式",
+    "Causal Mode": "休闲模式",
     "Cost:": "成本:",
     "Close": "关闭",
     "Equipments": "装备",
