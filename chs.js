@@ -169,7 +169,6 @@ var cnItems = {
     "(When blue and red merged, it *can't* be eliminated)": "（当蓝色和红色合并时，它*无法*被消除）",
     "(When blue and red merged, it can be eliminated)": "（蓝色和红色融合后即可消除）",
     "[Beta Version]": "[Beta 版本]",
-    "1st Term": "第一学期",
     "1. Not in any versus challenge": "1. 不参加任何对抗挑战",
     "after a gameplay. The amount is based on your\n                            game score, step ranks and": "玩完游戏后。 金额取决于您的\n游戏得分、步数排名和",
     "After you earns a copper coin, the": "当你赚到铜币后，",
@@ -263,7 +262,8 @@ var cnItems = {
     "": "",
     "": "",
     "": "",
-    "": "",
+    "3rd Term": "第 3 学期",
+    "1st Term": "第 1 学期",
     // 图标代码，不能汉化
     "Jacorb's Games": "Jacorb's Games",
     "": "",
